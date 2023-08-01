@@ -17,4 +17,4 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.2.1
-      - run: gradle optimizedDockerBuildNative
+      - run: gradle dockerBuild
