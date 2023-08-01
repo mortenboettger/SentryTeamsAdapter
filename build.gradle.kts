@@ -56,7 +56,15 @@ tasks {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
     }
+
+    dockerfile {
+        baseImage("eclipse-temurin:17")
+    }
+    dockerBuild {
+        images.add("ghcr.io/mortenboettger/sentry-teams-adapter:snapshot")
+    }
 }
+
 graalvmNative.toolchainDetection.set(false)
 micronaut {
     testRuntime("kotest5")
