@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: io.mboettger
+testFramework: kotest
+sourceLanguage: kotlin
+buildTool: gradle_kotlin
+features: [ app-name, gradle, http-client-test, kotest, kotlin, ksp, ktor, logback, micronaut-aot, micronaut-build, properties, readme, serialization-jackson, shade ]
