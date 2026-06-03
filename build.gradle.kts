@@ -1,10 +1,10 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.8.22"
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.0.2"
-    id("io.micronaut.aot") version "4.0.2"
+    id("org.jetbrains.kotlin.jvm") version "2.1.21"
+    id("org.jetbrains.kotlin.plugin.allopen") version "2.1.21"
+    id("com.google.devtools.ksp") version "2.1.21-2.0.2"
+    id("com.gradleup.shadow") version "9.4.2"
+    id("io.micronaut.application") version "5.0.0"
+    id("io.micronaut.aot") version "5.0.0"
 }
 
 version = "0.0.1"
@@ -20,12 +20,12 @@ repositories {
 
 dependencies {
     ksp("io.micronaut.serde:micronaut-serde-processor")
-    implementation("io.ktor:ktor-serialization-jackson-jvm:2.2.4")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.2.4")
-    implementation("io.ktor:ktor-server-netty-jvm:2.2.4")
-    implementation("io.ktor:ktor-client-core:2.2.4")
-    implementation("io.ktor:ktor-client-cio:2.2.4")
-    implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
+    implementation("io.ktor:ktor-serialization-jackson-jvm:3.2.4")
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:3.2.4")
+    implementation("io.ktor:ktor-server-netty-jvm:3.2.4")
+    implementation("io.ktor:ktor-client-core:3.2.4")
+    implementation("io.ktor:ktor-client-cio:3.2.4")
+    implementation("io.ktor:ktor-client-content-negotiation:3.2.4")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.kotlin:micronaut-ktor")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
@@ -42,26 +42,33 @@ application {
     mainClass.set("io.mboettger.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("17")
+    sourceCompatibility = JavaVersion.toVersion("23")
+    targetCompatibility = JavaVersion.toVersion("23")
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(25))
+    }
 }
 
 tasks {
     compileKotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_23)
         }
     }
     compileTestKotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_23)
         }
     }
 
     dockerfile {
-        baseImage("eclipse-temurin:17")
+        baseImage("eclipse-temurin:25")
     }
     dockerBuild {
-        images.add("ghcr.io/mortenboettger/sentry-teams-adapter:snapshot")
+        images.set(listOf("ghcr.io/mortenboettger/sentry-teams-adapter:snapshot"))
+    }
+    test {
+        failOnNoDiscoveredTests.set(false)
     }
 }
 
