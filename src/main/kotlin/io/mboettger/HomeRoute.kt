@@ -31,6 +31,9 @@ class HomeRoute(private val adapterConfig: AdapterConfig) : KtorRoutingBuilder({
 
     post("/") {
         val event = call.receive<SentryWebhookRequest>().data.event
+
+        println("[HomeRoute] Received event: ${event.event_id}]")
+
         val card = AdaptiveCard(listOf(
             TextBlock(
                 text = event.type.uppercase(),
@@ -56,6 +59,10 @@ class HomeRoute(private val adapterConfig: AdapterConfig) : KtorRoutingBuilder({
         val response = client.post(adapterConfig.teamsWebhookUrl) {
             contentType(ContentType.Application.Json)
             setBody(WebhookMessage(listOf(WebhookMessageAttachment(card))))
+        }
+
+        if (response.status != HttpStatusCode.OK) {
+            println("[HomeRoute] Received status: ${response.status.value}")
         }
 
         call.respond("")
